@@ -28,9 +28,9 @@ module.exports = {
 
     const topExp = usersWithExp.sort((a, b) => b.exp - a.exp).slice(0, 10);
 
-    const topUsersList = topExp.map((user, index) => `${index + 1}. 🍂${user.name}🍂\n     ➥${user.exp}`);
+    const topUsersList = topExp.map((user, index) => `${index + 1}. 🪙${user.name}\n     ➥${user.exp}`);
 
-    const messageText = `𓀬 𝙏𝙊𝙋 𝙍𝘼𝙉𝙆 𝙐𝙎𝙀𝙍 𓀬\n \n${topUsersList.join('\n')}`;
+    const messageText = ` 𝙏𝙊𝙋 𝙍𝘼𝙉𝙆 𝙐𝙎𝙀𝙍 \n \n${topUsersList.join('\n')}`;
 
     message.reply(messageText);
   }
