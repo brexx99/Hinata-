@@ -88,7 +88,7 @@ module.exports = {
 
         const formattedBalance = formatNumberWithFullForm(user.money);
 
-        msg += `${index + 1}. ♕︎${user.name}♕︎ \n        ➥$ ${formattedBalance}\n`;
+        msg += `${index + 1}. 🏆${user.name} \n        ● 💷 ${formattedBalance}\n`;
 
       });
 
@@ -96,7 +96,7 @@ module.exports = {
 
 
 
-    msg += "💫𝐁𝐞𝐬𝐭 𝐨𝐟 𝐥𝐮𝐜𝐤💫";
+    msg += " 𝐁𝐞𝐬𝐭 𝐨𝐟 𝐥𝐮𝐜𝐤 🫶🏻";
 
 
 
