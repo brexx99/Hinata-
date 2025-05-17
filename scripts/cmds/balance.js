@@ -11,7 +11,7 @@ module.exports = {
         },
         category: "economy",
         guide: {
-            en: "   {pn}: view your money 💰"
+            en: "   {pn}: view your money 🪙"
                 + "\n   {pn} <@tag>: view the money of the tagged person 💵"
                 + "\n   {pn} send [amount] @mention: send money to someone 💸"
                 + "\n   {pn} request [amount] @mention: request money from someone 💵"
@@ -57,10 +57,10 @@ module.exports = {
         const formattedMoney = this.formatMoney(money);
 
         if (isSelfCheck) {
-            return message.reply(`💰 𝑌𝑜𝑢𝑟 𝐵𝑎𝑙𝑎𝑛𝑐𝑒 𝑖𝑠 ${formattedMoney} $ 🤑`);
+            return message.reply(`💵 𝗬𝗼𝘂𝗿 𝗕𝗮𝗹𝗮𝗻𝗰𝗲 𝑖𝑠 ${formattedMoney} $ 💸`);
         } 
         else {
-            return message.reply(`💳 𝑩𝑨𝑳𝑨𝑵𝑪𝑬 𝑰𝑵𝑭𝑶 💳\n💰 ${userData?.name || "𝑈𝑠𝑒𝑟"} - 𝐻𝑎𝑠 ${formattedMoney} $ 💸\n💫 𝐻𝑎𝑣𝑒 𝑎 𝑔𝑜𝑜𝑑 𝑑𝑎𝑦 💫`);
+            return message.reply(`💸 𝗯𝗮𝗹𝗮𝗻𝗰𝗲 𝗜𝗻𝗳𝗼 \n 💵 ${userData?.name || "𝑈𝑠𝑒𝑟"} - 𝐻𝑎𝑠 ${formattedMoney} $ 💸\n💫 𝐻𝑎𝑣𝑒 𝑎 𝑔𝑜𝑜𝑑 𝑑𝑎𝑦 💫`);
         }
     },
 
