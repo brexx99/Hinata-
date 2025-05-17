@@ -56,7 +56,7 @@ module.exports = {
 
 
 
-    let msg = "♔︎ 𝐓𝐎𝐏 𝐑𝐈𝐂𝐇𝐄𝐒𝐓 𝐏𝐄𝐑𝐒𝐎𝐍 ♔︎\n \n";
+    let msg = "𝐓𝐎𝐏 𝐑𝐈𝐂𝐇𝐄𝐒𝐓 𝐏𝐄𝐑𝐒𝐎𝐍\n \n";
 
 
 
@@ -70,7 +70,7 @@ module.exports = {
 
         const formattedBalance = formatNumberWithFullForm(richestUser.money);
 
-        msg += `1. ♕︎${richestUser.name}♕︎ \n        ➥ $ ${formattedBalance}\n`;
+        msg += `1. 💴${richestUser.name} \n        ➥ $ ${formattedBalance}\n`;
 
       } else {
 
