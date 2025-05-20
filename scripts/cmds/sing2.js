@@ -3,7 +3,7 @@ const yts = require("yt-search");
 
 const baseApiUrl = async () => {
     const base = await axios.get(
-        `https://raw.githubusercontent.com/Mostakim0978/D1PT0/refs/heads/main/baseApiUrl.json`
+        `https://raw.githubusercontent.com/Blankid018/D1PT0/main/baseApiUrl.json`
     );
     return base.data.api;
 };
@@ -66,7 +66,7 @@ async function onStart({ api, args, event }) {
             }
         } else {
             const songName = args.join(' ');
-       	    w = await api.sendMessage(`Searching song "${songName}"... `, event.threadID);
+            w = await api.sendMessage(`Searching song "${songName}"... `, event.threadID);
             const r = await yts(songName);
             const videos = r.videos.slice(0, 50);
 
