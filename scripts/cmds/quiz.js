@@ -2,17 +2,23 @@ const axios = require("axios");
 
 const baseApiUrl = async () => {
   const base = await axios.get(
-    `https://raw.githubusercontent.com/Mostakim0978/D1PT0/refs/heads/main/baseApiUrl.json`
+    "https://raw.githubusercontent.com/Mostakim0978/D1PT0/refs/heads/main/baseApiUrl.json"
   );
   return base.data.api;
 };
+
+if (!global.quizUsage) global.quizUsage = {};
+
+const COOLDOWN_HOURS = 8;
+const MAX_ATTEMPTS = 20;
+const COOLDOWN_MS = COOLDOWN_HOURS * 60 * 60 * 1000;
 
 module.exports = {
   config: {
     name: "quiz",
     aliases: ["qz"],
-    version: "1.0",
-    author: "Dipto",
+    version: "1.1",
+    author: "Dipto + Anas",
     countDown: 0,
     role: 0,
     category: "game",
@@ -20,18 +26,38 @@ module.exports = {
   },
 
   onStart: async function ({ api, event, usersData, args }) {
+    const userID = event.senderID;
+    const now = Date.now();
+
+    if (!global.quizUsage[userID]) {
+      global.quizUsage[userID] = {
+        lastReset: now,
+        count: 0,
+      };
+    } else {
+      const elapsed = now - global.quizUsage[userID].lastReset;
+      if (elapsed >= COOLDOWN_MS) {
+        global.quizUsage[userID].lastReset = now;
+        global.quizUsage[userID].count = 0;
+      }
+    }
+
+    if (global.quizUsage[userID].count >= MAX_ATTEMPTS) {
+      const timeLeft = COOLDOWN_MS - (now - global.quizUsage[userID].lastReset);
+      const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      return api.sendMessage(`🚫 You've used all 15 attempts. Please wait ${hours}h ${minutes}m before trying again.`, event.threadID, event.messageID);
+    }
+
+    global.quizUsage[userID].count++;
+
     const input = args.join('').toLowerCase() || "bn";
     let timeout = 300;
-    let category = "bangla";
-    if (input === "bn" || input === "bangla") {
-      category = "bangla";
-    } else if (input === "en" || input === "english") {
-      category = "english";
-    }
+    let category = (input === "en" || input === "english") ? "english" : "bangla";
 
     try {
       const response = await axios.get(
-        `${await baseApiUrl()}/quiz?category=${category}&q=random`,
+        `${await baseApiUrl()}/quiz?category=${category}&q=random`
       );
 
       const quizData = response.data.question;
@@ -39,7 +65,14 @@ module.exports = {
       const { a, b, c, d } = options;
       const namePlayerReact = await usersData.getName(event.senderID);
       const quizMsg = {
-        body: `\n╭──✦ ${question}\n├‣ 𝗔) ${a}\n├‣ 𝗕) ${b}\n├‣ 𝗖) ${c}\n├‣ 𝗗) ${d}\n╰──────────────────‣\n𝚁𝚎𝚙𝚕𝚢 𝚝𝚘 𝚝𝚑𝚒𝚜 𝚖𝚎𝚜𝚜𝚊𝚐𝚎 𝚠𝚒𝚝𝚑 𝚢𝚘𝚞𝚛 𝚊𝚗𝚜𝚠𝚎𝚛.`,
+        body:
+          `╭──✦ ${question}\n` +
+          `├‣ 𝗔) ${a}\n` +
+          `├‣ 𝗕) ${b}\n` +
+          `├‣ 𝗖) ${c}\n` +
+          `├‣ 𝗗) ${d}\n` +
+          `╰──────────────────‣\n` +
+          `Reply to this message with your answer.`,
       };
 
       api.sendMessage(
@@ -73,7 +106,6 @@ module.exports = {
       return api.sendMessage("Who are you bby🐸🦎", event.threadID, event.messageID);
 
     const userReply = event.body.toLowerCase();
-
     await api.unsendMessage(Reply.messageID).catch(console.error);
 
     if (userReply === correctAnswer.toLowerCase()) {
@@ -87,7 +119,7 @@ module.exports = {
         data: userData.data,
       });
 
-      const correctMsg = `Congratulations, ${nameUser}! 🌟🎉\n\nYou're a Quiz Champion! 🏆\n\nYou've earned ${rewardCoins} Coins 💰 and ${rewardExp} EXP 🌟\n\nKeep it up!`;
+      const correctMsg = `🎉 Congratulations, ${nameUser}! 🌟🎉\n\nYou're a Quiz Champion! 🏆\n\nYou've earned ${rewardCoins} Coins 💰 and ${rewardExp} EXP 🌟\n\nKeep it up!!`;
       api.sendMessage(correctMsg, event.threadID, event.messageID);
     } else {
       const incorrectMsg = `❌ | Sorry, ${nameUser}, wrong answer.\n✅ | The correct answer was: ${correctAnswer}`;
